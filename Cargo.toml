@@ -1,0 +1,12 @@
+[package]
+name = "sqlite-rust-starter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sqlite-loadable = "0.0.5"
+libxml = "0.3.1"
+serde_json = "1.0.87"
+
+[lib]
+crate-type=["lib", "staticlib", "cdylib"]
