@@ -1,5 +1,5 @@
 [package]
-name = "sqlite-rust-starter"
+name = "sqlite-xml"
 version = "0.1.0"
 edition = "2021"
 
