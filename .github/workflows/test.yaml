@@ -67,10 +67,10 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - run: vcpkg install libxml2:x64-windows
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: choco install libxml2
       - run: make loadable
       #- run: make test
       - name: Upload artifacts
