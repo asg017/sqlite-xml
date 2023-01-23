@@ -53,31 +53,6 @@ jobs:
         with:
           name: sqlite-xml-macos
           path: dist/debug/xml0.dylib
-  test-macos-arm:
-    name: Testing macos-latest with arm
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - run: rustup target add aarch64-apple-darwin
-      - run: make target=aarch64-apple-darwin loadable
-      #- run: make test
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: sqlite-xml-macos-arm
-          path: dist/debug/xml0.dylib
   test-windows:
     name: Testing windows-latest
     runs-on: windows-latest
@@ -95,6 +70,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+      - run: choco install libxml2
       - run: make loadable
       #- run: make test
       - name: Upload artifacts
