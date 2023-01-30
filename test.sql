@@ -109,7 +109,8 @@ select
   xml_extract(node, './/mediawiki:timestamp/text()') as timestamp
 from xml_each(
   readfile('enwikinews-latest-pages-articles.xml'), 
-  '//mediawiki:page'
+  '//mediawiki:page',
+  json_object("mediawiki", "http://www.mediawiki.org/xml/export-0.10/")
 )
 order by 2 desc
 limit 20;

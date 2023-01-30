@@ -1,36 +1,32 @@
-- [ ] subtype 'X' in `xml_extract` (if node??)
-- [ ] `xml_valid(document)`
-- [ ] `xml_attribute_has(document, xpath, attribute)`
-- [ ] `xml_valid(document)`
-- [ ] `xml_valid(document)`
-- [ ] `xml_valid(document)`
-- [ ] `xml_element(node, attributes, child1, ...)`
+# sqlite-xml
 
-- [ ] xml schema stuff?
+A work-in-progress SQLite extension for querying XML! Not meant to be widely shared.
+
+Once it's ready, you'll be able to do things like:
 
 ```sql
-create table xml_reader(
-  each='//item',
-  './/guid' as id,
-  './/name' as name,
-  './/age' as age,
-  './/grades[0].score' as last_score
-);
-```
+select xml_extract(readfile('student.xml'), '//student/name/text()'); -- 'Alex Garcia'
 
-```sql
-
---- how handle namespaces
-
-select xml_extract(
-  document,
-  '//mediawiki:page',
-  xml_namespaces(
-    "mediawiki", "http://www.mediawiki.org/xml/export-0.10/"
-  )
+select
+  xml_extract(node, './/text()') as text
+from xml_each(
+  '
+    <items>
+      <item>Alex</item>
+      <item>Brian</item>
+      <item>Craig</item>
+    </items>
+  ',
+  '//item'
 );
 
-insert into xml_namespaces
-  select "mediawiki", "http://www.mediawiki.org/xml/export-0.10/";
-
+/*
+┌───────┐
+│ text  │
+├───────┤
+│ Alex  │
+│ Brian │
+│ Craig │
+└───────┘
+*/
 ```
