@@ -44,14 +44,11 @@ pub fn xml_extract(context: *mut sqlite3_context, values: &[*mut sqlite3_value])
 
     let p = unsafe { api::value_pointer::<Item>(arg_doc, b"xml_node\0") };
     if let Some(item) = p {
-        let result = match item
-            .as_ref()
-            .context
-            .node_evaluate_readonly(xpath, *item.node)
-        {
+        let item = unsafe { &*item };
+        let result = (item).context.node_evaluate_readonly(xpath, *(item).node);
+        let result = match result {
             Ok(result) => result,
             Err(_) => {
-                Box::into_raw(item);
                 return Err(Error::new_message(
                     format!("unknown error evaluation xpath: {}", xpath).as_str(),
                 ));
@@ -61,19 +58,17 @@ pub fn xml_extract(context: *mut sqlite3_context, values: &[*mut sqlite3_value])
         match matching.get(0) {
             Some(node) => match node.get_type() {
                 Some(NodeType::TextNode) => {
-                    result_xml(context, &item.document, &node)?;
+                    result_xml(context, &item.document, node)?;
                 }
                 _ => {
-                    let value = item.document.ronode_to_string(&node);
-                    api::result_text(context, &value)?;
+                    let value = item.document.ronode_to_string(node);
+                    api::result_text(context, value)?;
                 }
             },
             None => {
                 api::result_null(context);
             }
         }
-        // TODO make sure this shit always runs before exiting (even before propgating errors)
-        Box::into_raw(item);
         return Ok(());
     }
     //let item = unsafe { Box::from_raw(p as *mut Item) };
@@ -96,7 +91,7 @@ pub fn xml_extract(context: *mut sqlite3_context, values: &[*mut sqlite3_value])
     match matching.get(0) {
         Some(node) => {
             println!("{:?}", node.get_type());
-            api::result_text(context, doc.ronode_to_string(&node).as_str())?;
+            api::result_text(context, doc.ronode_to_string(node).as_str())?;
         }
         None => {
             api::result_null(context);
@@ -126,7 +121,7 @@ pub fn libxml_attribute_get(
     match matching.get(0) {
         Some(node) => match node.get_attribute(attribute) {
             Some(value) => {
-                api::result_text(context, &value)?;
+                api::result_text(context, value)?;
             }
             None => {
                 api::result_null(context);

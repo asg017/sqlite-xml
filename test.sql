@@ -1,15 +1,16 @@
-.load target/debug/libxml0
+.load target/debug/libsqlite_xml sqlite3_xml_init
 .header on
 .mode box
 
 select xml_extract('<a> <t>c</e>', '//t');
 
-.exit
 
 
-select 
+select
   xml_extract(node, './/text()') as text,
   xml_extract(node, './/sub') as sub,
+  node ->> './/text()',
+  node ->> './/sub',
   xml
 from xml_each(
   '<all>
@@ -17,21 +18,20 @@ from xml_each(
     <item><sub></sub></item>
     <item>c</item>
     <item>d</item>
-  </all>', 
+  </all>',
   '//item'
 );
 
-.exit
 
-select 
+select
   node,
   --contents,
   xml_extract(node, './/title/text()'),
   xml_extract(node, './/link/text()'),
   xml_extract(node, './/media:rating')
 from xml_each(
-  readfile('simon.rss'), 
-  '//item', 
+  readfile('simon.rss'),
+  '//item',
   json_object(
     "media", "http://search.yahoo.com/mrss/"
   )
@@ -41,21 +41,21 @@ where xml_extract(node, './/media:content') is not null;
 
 .exit
 
-create table documents as 
+create table documents as
   select '<?xml version="1.0" encoding="UTF-8"?>
 <root>
     <child attribute="value">some text</child>
     <child attribute="empty">more text</child>
 </root>' as document;
 
-select 
+select
   xml_extract(document, '//child/text()'),
   xml_extract(document, '//child'),
   --xml_extract(document, '//child'),
   xml_extract(document, "//child[@attribute][2]")
 from documents;
 
-select 
+select
   xml_extract(document, '//child/text()'),
   xml_extract(document, '//child'),
   --xml_extract(document, '//child'),
@@ -67,7 +67,7 @@ select xml_extract(
   '//title['
 );
 
-select 
+select
   xml_extract(contents, '//title/text()') as title,
   xml_extract(contents, '//description/text()') as description
   --contents
@@ -103,12 +103,12 @@ select xml_extract(
 
 
 
-select 
+select
   --contents,
   xml_extract(node, './/mediawiki:title/text()') as title,
   xml_extract(node, './/mediawiki:timestamp/text()') as timestamp
 from xml_each(
-  readfile('enwikinews-latest-pages-articles.xml'), 
+  readfile('enwikinews-latest-pages-articles.xml'),
   '//mediawiki:page',
   json_object("mediawiki", "http://www.mediawiki.org/xml/export-0.10/")
 )

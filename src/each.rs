@@ -1,7 +1,8 @@
 use libxml::{parser::Parser, readonly::RoNode, tree::Document, xpath::Context};
 use sqlite_loadable::{
     api,
-    table::{ConstraintOperator, IndexInfo, VTab, VTabArguments, VTabCursor},
+    scalar::scalar_function_raw,
+    table::{ConstraintOperator, IndexInfo, VTab, VTabArguments, VTabCursor, VTabFind},
     BestIndexError, Result,
 };
 use sqlite_loadable::{prelude::*, Error};
@@ -148,6 +149,19 @@ impl<'vtab> VTab<'vtab> for XmlEachTable {
         args: VTabArguments,
     ) -> Result<(String, Self)> {
         Self::connect(db, aux, args)
+    }
+}
+
+impl<'vtab> VTabFind<'vtab> for XmlEachTable {
+    fn find_function(
+        &mut self,
+        argc: i32,
+        name: &str,
+    ) -> Option<unsafe extern "C" fn(*mut sqlite3_context, i32, *mut *mut sqlite3_value)> {
+        if name == "->>" {
+            return Some(scalar_function_raw(crate::xml_extract));
+        }
+        None
     }
 }
 
