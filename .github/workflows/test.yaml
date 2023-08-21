@@ -24,6 +24,7 @@ jobs:
         with:
           toolchain: stable
       - run: make loadable
+      - run: make test-loadable
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -47,14 +48,35 @@ jobs:
         with:
           toolchain: stable
       - run: make loadable
-      #- run: make test
+      - run: make test-loadable
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: sqlite-xml-macos
           path: dist/debug/xml0.dylib
+  test-macos-aarch64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: rustup target add aarch64-apple-darwin
+      - run: LIBXML2_CFLAGS="-target arm64-apple-macos11" make loadable target=aarch64-apple-darwin
+      - uses: actions/upload-artifact@v3
+        with:
+          name: sqlite-xml-macos-aarch64
+          path: dist/debug/xml0.dylib
   test-windows:
-    name: Testing windows-latest
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -71,9 +93,9 @@ jobs:
         with:
           toolchain: stable
       - run: rustup set default-host x86_64-pc-windows-gnu
-      - run: make loadable
-      - uses: mxschmitt/action-tmate@v3
-        if: always()
+      - run: make loadable target=x86_64-pc-windows-gnu
+      #- uses: mxschmitt/action-tmate@v3
+      #  if: always()
       - run: make test
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
