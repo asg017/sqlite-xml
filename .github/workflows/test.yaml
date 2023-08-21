@@ -54,8 +54,6 @@ jobs:
           name: sqlite-xml-macos
           path: dist/debug/xml0.dylib
   test-windows:
-    # how do we install libxml on windows gh actions?
-    if: false
     name: Testing windows-latest
     runs-on: windows-latest
     steps:
@@ -69,12 +67,11 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - run: vcpkg install libxml2:x64-windows
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
       - run: make loadable
-      #- run: make test
+      - run: make test
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
