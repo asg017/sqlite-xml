@@ -96,7 +96,7 @@ jobs:
       - run: make loadable
       #- uses: mxschmitt/action-tmate@v3
       #  if: always()
-      - run: make test
+      - run: make test-loadable
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
