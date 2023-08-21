@@ -71,6 +71,8 @@ jobs:
         with:
           toolchain: stable
       - run: make loadable
+      - uses: mxschmitt/action-tmate@v3
+        if: always()
       - run: make test
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

@@ -43,7 +43,7 @@ $(prefix):
 	mkdir -p $(prefix)/release
 
 $(TARGET_LOADABLE): $(prefix) $(shell find . -type f -name '*.rs')
-	cargo build $(CARGO_TARGET)
+	cargo build -vv $(CARGO_TARGET)
 	cp $(BUILT_LOCATION) $@
 
 $(TARGET_STATIC): $(prefix) $(shell find . -type f -name '*.rs')
