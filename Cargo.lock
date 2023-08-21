@@ -422,6 +422,8 @@ checksum = "43b2853a4d09f215c24cc5489c992ce46052d359b5109343cbafbf26bc62f8a3"
 [[package]]
 name = "sqlite-loadable"
 version = "0.0.6-alpha.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07949823c35f9e5cf978768084a74298d4c9bc8610fa116401d1d3ee4affac6e"
 dependencies = [
  "bitflags",
  "serde",
@@ -433,6 +435,8 @@ dependencies = [
 [[package]]
 name = "sqlite-loadable-macros"
 version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "96037a396115a2675db783f700faad878b44c8ff56c8a29c3404649a517a5e8f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -451,6 +455,8 @@ dependencies = [
 [[package]]
 name = "sqlite3ext-sys"
 version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3afdc2b3dc08f16d6eecf8aa07d19975a268603ab1cca67d3f9b4172c507cf16"
 dependencies = [
  "bindgen",
  "cc",
