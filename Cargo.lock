@@ -252,7 +252,7 @@ dependencies = [
 [[package]]
 name = "libxml"
 version = "0.3.3"
-source = "git+https://github.com/asg017/rust-libxml.git?rev=71e9132679b291c55aecad14bc9a99bfb2795c14#71e9132679b291c55aecad14bc9a99bfb2795c14"
+source = "git+https://github.com/asg017/rust-libxml.git?rev=b6067f8dd35e67179f6d5d81dcdb8a81907952ce#b6067f8dd35e67179f6d5d81dcdb8a81907952ce"
 dependencies = [
  "cmake",
  "flate2",
