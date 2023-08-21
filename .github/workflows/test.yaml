@@ -48,7 +48,7 @@ jobs:
         with:
           toolchain: stable
       - run: make loadable
-      - run: make test-loadable
+      - run: make test-loadable python=/usr/local/opt/python@3/libexec/bin/python
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -92,8 +92,8 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: rustup set default-host x86_64-pc-windows-gnu
-      - run: make loadable target=x86_64-pc-windows-gnu
+      #- run: rustup set default-host x86_64-pc-windows-gnu
+      - run: make loadable
       #- uses: mxschmitt/action-tmate@v3
       #  if: always()
       - run: make test

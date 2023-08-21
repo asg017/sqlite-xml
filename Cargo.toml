@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 sqlite-loadable = { version = "0.0.6-alpha.2"}
-libxml = {git = "https://github.com/asg017/rust-libxml.git", rev = "418a7fa460ae9d7cac5d8d7c6e8f5e457e711dcf", features = ["build-source"]}
+libxml = {git = "https://github.com/asg017/rust-libxml.git", rev = "038a2dda98f4b63740520ba10b4ce537166a76fa", features = ["build-source"]}
 serde_json = "1.0.87"
 
 [lib]
